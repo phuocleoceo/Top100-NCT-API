@@ -1,12 +1,19 @@
+from typing import List, Optional
 from pydantic import BaseModel
 
 
 class Song(BaseModel):
-    avatar: str
-    bgImage: str
-    coverImage: str
-    creator: str
-    lyric: str
-    music: str
-    title: str
-    url: str
+    avatar: Optional[str] = ""
+    bgImage: Optional[str] = ""
+    coverImage: Optional[str] = ""
+    creator: Optional[str] = ""
+    lyric: Optional[str] = ""
+    music: Optional[str] = ""
+    title: Optional[str] = ""
+    url: Optional[str] = ""
+
+
+class Category(BaseModel):
+    name: Optional[str] = ""
+    url: Optional[str] = ""
+    songs: Optional[List] = []
