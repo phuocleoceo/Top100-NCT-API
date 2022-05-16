@@ -9,9 +9,10 @@ with open("./config.json", "r") as file:
 
 
 MONGODB_URL = config["cluster"]
+API_URL = config["api"]
 DATABASE_NAME = "top100-nct"
 
 
-async def get_db():
+async def database():
     client = motor.motor_asyncio.AsyncIOMotorClient(MONGODB_URL, tlsCAFile=certifi.where())
     return client[DATABASE_NAME]
