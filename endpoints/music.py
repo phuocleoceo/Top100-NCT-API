@@ -45,8 +45,8 @@ async def get_top_category():
         collection = db[top]
         cursor = collection.find({})
         if cursor:
-            async for user in cursor:
-                d[top].append(Category(**user).name)
+            async for category in cursor:
+                d[top].append(Category(**category).name)
     return ResponseModel(d, 200, "Get Top Category Successfully", False)
 
 
@@ -60,3 +60,27 @@ async def filter_by_top_category(top: str, category: str):
     category_cursor = Category(**cursor)
     # Trả về danh sách bài hát
     return ResponseModel(category_cursor.songs, 200, "Filter Successfully", False)
+
+
+@router.get("/search_by_title")
+async def search_by_title(title: str):
+    result = []
+    # Danh sách các Collection chính là danh sách Top
+    db = await database()
+    tops = await db.list_collection_names()
+    for top in tops:
+        # top : [top100_VN, top100_AM, ...]
+        collection = db[top]
+        # cursor = ["Nhạc Trẻ", "Trữ Tình"]
+        cursor = collection.find({})
+        if cursor:
+            async for category in cursor:
+                # songs : danh sách bài hát thuộc thể loại này
+                songs = Category(**category).songs
+                # Duyệt từng bài hát để kiểm tra
+                for song in songs:
+                    song = Song(**song)
+                    # Nếu title chứa trong title của 1 bài hát thì ta thêm vào két quả trả về
+                    if(title.lower() in song.title.lower()):
+                        result.append(song)
+    return ResponseModel(result, 200, "Get Top Category Successfully", False)
