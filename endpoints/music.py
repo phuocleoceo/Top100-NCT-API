@@ -1,3 +1,4 @@
+from models.ResponseModel import ResponseModel
 from models.driver import database, API_URL
 from fastapi import APIRouter
 import requests
@@ -26,5 +27,10 @@ async def get_music_from_api():
         # Thêm vào Document hiện tại các thể loại bài hát
         # Mỗi thể loại có 1 mảng songs chứa các bài hát
         await collection.insert_many(top_songs)
-    # Trả về status_code của response
-    return response.status_code
+    # Trả về các top
+    return ResponseModel(list(songs.keys()), 200, "Get Music Successfully", False)
+
+
+@router.get("/get_top_category")
+async def get_music_from_api(top: str, category: str):
+    return True
