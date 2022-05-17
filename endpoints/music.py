@@ -31,8 +31,8 @@ async def get_music_from_api():
             await collection.insert_many(top_songs)
         # Trả về các top
         return ResponseModel(list(songs.keys()), 200, "Get Music Successfully", False)
-    except Exception as e:
-        return ResponseModel([], 500, e.message, e.args)
+    except:
+        return ResponseModel([], 500, "Error Get Music From API", True)
 
 
 @router.get("/get_top_category")
@@ -52,8 +52,8 @@ async def get_top_category():
                 async for category in cursor:
                     d[top].append(Category(**category).name)
         return ResponseModel(d, 200, "Get Top Category Successfully", False)
-    except Exception as e:
-        return ResponseModel([], 500, e.message, e.args)
+    except:
+        return ResponseModel([], 500, "Error Get Top Category", True)
 
 
 @router.get("/filter_by_top_category")
@@ -67,8 +67,8 @@ async def filter_by_top_category(top: str, category: str):
         category_cursor = Category(**cursor)
         # Trả về danh sách bài hát
         return ResponseModel(category_cursor.songs, 200, "Filter Successfully", False)
-    except Exception as e:
-        return ResponseModel([], 500, e.message, e.args)
+    except:
+        return ResponseModel([], 500, "Error Filter Music", True)
 
 
 @router.get("/search_by_title")
@@ -94,5 +94,5 @@ async def search_by_title(title: str):
                         if(title.lower() in song.title.lower()):
                             result.append(song)
         return ResponseModel(result, 200, "Get Top Category Successfully", False)
-    except Exception as e:
-        return ResponseModel([], 500, e.message, e.args)
+    except:
+        return ResponseModel([], 500, "Error Search Music", True)
